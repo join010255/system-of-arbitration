@@ -17,7 +17,7 @@ async function main(){
         await sequelize.sync()
     }catch(error){
         console.log(error)
-    }
+    } 
 
     app.listen(20514, () => {
         console.log("server is conactd")
