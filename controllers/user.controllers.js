@@ -39,7 +39,7 @@ class UserControle{
     }
     regester = async(req, res) => {
         try{
-            const result = User.findOne({
+            const result = await User.findOne({
                 where : {
                     [Op.or] : [
                         {username : req.body.username},
@@ -60,6 +60,10 @@ class UserControle{
             res.status(201).json({message : "regester ok"})
 
         }catch(error){
+            console.log(error) /*hna kin error hawa null
+TypeError: Cannot read properties of undefined (reading 'password')
+    at regester (file:///home/dalas/football-server/referee-api/controllers/user.controllers.js:53:56)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)*/ 
             res.status(500).json({message : "regester error in the server"})
         }
     }
