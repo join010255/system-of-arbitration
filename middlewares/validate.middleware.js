@@ -25,6 +25,8 @@ export const validationLogin = async(req, res, next) => {
 }
 
 export const validationRegerster = async(req, res, next) => {
-    const {}
+    const {username, email, password, role} = req.body;
+    if(!username || !email || !password || !role) return res.status(404).json({message : ""})
+    next()
 }
 

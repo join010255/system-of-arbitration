@@ -3,6 +3,7 @@ import sequelize from "./config/database.js";
 import routerAR from './routes/arbitre.routes.js';
 import routerMatch from "./routes/match.routes.js";
 import routerAff from "./routes/affectation.routes.js";
+import routesUser from "./routes/user.routes.js";
 
 
 async function main(){
@@ -11,6 +12,7 @@ async function main(){
     app.use('/arbite', routerAR)
     app.use('/match', routerMatch)
     app.use('/affextaion', routerAff)
+    app.use('/', routesUser)
     try{    
         await sequelize.authenticate();
         console.log("database has conetiond")
