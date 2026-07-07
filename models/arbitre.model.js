@@ -22,23 +22,23 @@ const Arbitre = sequelize.define("Arbitre", {
   },
   confedeation: {
     type: DataTypes.ENUM(
-      "UEFA",
-      "CAF",
-      "AFC",
-      "CONMEBOL",
-      "CONCACAF",
-      "OFC"
+      "uefa",
+      "caf",
+      "afc",
+      "conmebol",
+      "concacaf",
+      "ofc"
     ),
     allowNull: false
   },
   categorie: {
     type: DataTypes.ENUM(
-      "Central",
-      "Assistant",
-      "VAR",
-      "AVAR",
-      "Fourth Official"
-    ),
+    "central",
+    "assistant",
+    "var",
+    "avar",
+    "fourth official"
+  ),
     allowNull: false
   },
   experience: {

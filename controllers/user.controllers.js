@@ -23,9 +23,7 @@ class UserControle{
             
             const token = jwt.sign(
                 {
-                    id : user.id,
-                    username : user.username,
-                    role : user.role
+                    id : user.id
                 },
                 process.env.JWT_SECRET,
                 {
@@ -47,15 +45,14 @@ class UserControle{
                     ]
                 }
             })
-            console.log(result)
             if(result) return res.status(409).json({message : "no regester"})
-            const {body} = req.body;
-            const paswordHash = await bcrypt.hash(body.password, 10)
+            const paswordHash = await bcrypt.hash(req.body.password, 10)
+            console.log(paswordHash)
             await User.create({
-                username : body.username,
-                email: body.email,
+                username : req.body.username,
+                email: req.body.email,
                 password: paswordHash,
-                role : body.role
+                role : req.body.role
             })
             res.status(201).json({message : "regester ok"})
 

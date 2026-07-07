@@ -31,7 +31,7 @@ const Match = sequelize.define(
     },
     phase: {
       type: DataTypes.ENUM(
-        "Groupes",
+        "groupes",
         "8e",
         "4e",
         "demi",
