@@ -1,6 +1,8 @@
 import MatchManager from "../controllers/match.controller.js";
 import express from "express";
 import { validationMatch } from "../middlewares/validate.middleware.js";
+import {authenticate} from "../middlewares/authenticate.middleware.js";
+import {authorize} from "../middlewares/authorize.middleware.js"
 
 
 const routerMatch = express.Router()
@@ -12,7 +14,7 @@ const matchManager = new MatchManager()
 routerMatch.get("/", matchManager.getAll)
 routerMatch.get("/:id", matchManager.getByID)
 routerMatch.put("/:id", validationMatch, matchManager.updateData)
-routerMatch.post("/", validationMatch, matchManager.setData)
+routerMatch.post("/", validationMatch, authenticate,  authorize(), matchManager.setData)
 routerMatch.delete("/:id", matchManager.delete)
 
 export default routerMatch;

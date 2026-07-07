@@ -10,11 +10,11 @@ class UserControle{
         try{
             const user = await User.findOne({
                 where: {
-                    username :  req.body.username
+                    [Op.or] : [{username :  req.body.username}, {email : req.body.email}] 
                 }
             })
             if(!user) return res.status(404).json({message : "user note found"})
-            
+            // console.log(user)
             const verfypasswords = bcrypt.compare(
                 req.body.password,
                 user.password
@@ -46,6 +46,12 @@ class UserControle{
                 }
             })
             if(result) return res.status(409).json({message : "no regester"})
+            const checkAdmin = await User.findOne({
+                where : {role : req.body.role}
+            })
+            
+            if(checkAdmin && req.body.role.toLowerCase() === "admin") return res.status(403).json({message: "Admin registration is not allowed."})
+
             const paswordHash = await bcrypt.hash(req.body.password, 10)
             console.log(paswordHash)
             await User.create({
