@@ -30,6 +30,10 @@ class AffectationManages{
     setData = async(req, res) => {
         try{
             const {arbitreId, matchId, role} = req.body
+            const  checkarbitId  = await Arbitre.findOne(arbitreId);
+            const  checkMatchId  = await Arbitre.findOne(matchId);
+            if(!checkarbitId) return res.status(404).json({message : "arbitid not fount"})
+            if(!checkMatchId) return res.status(404).json({message : "matchId not found"})
             await Affectation.create({
                 arbitreId,
                 matchId, 

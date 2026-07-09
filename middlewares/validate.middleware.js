@@ -35,19 +35,25 @@ export const validationarbite = async(req, res, next) => {
     next()
 }
 
-export const validationLogin = async(req, res, next) => {
-    const  validateData = z.object({
-        email : z.string().email(),
-        password : z.string().min(8, "the password size is 8 len")
-    })
-    const {email, username, password} = req.body;
-//return res.status(400).json({message: "error in request"});
-    if(email || username && password){
+// zod object validtion to login 
+const validateData = z.object({
+    email : z.string().email().optional(),
+    username : z.string().min(3).optional(),
+    password : z.string().min(8)
+}).refine((data) => data.email || data.username, {
+    message : "email or username not found",
+    path: ["email"]    
+});
 
+export const validationLogin = async(req, res, next) => {
+    const result = validateData.safeParse(req.body);
+    if(!result.success){
+        return res.statut(400).json({message : "error in login "})
     }
     next()
 }
 
+// i add zod in validationRegerster function
 export const validationRegerster = async(req, res, next) => {
     const {username, email, password, role} = req.body;
     if(!username || !email || !password) return res.status(400).json({message : "5ona da5le"})
