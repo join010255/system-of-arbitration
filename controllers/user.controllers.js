@@ -32,6 +32,7 @@ class UserControle{
             )
             res.status(200).json({token : token})
         }catch(error){
+            console.log(error)
             res.status(404).json({message : "data set sec"})
         }
     }

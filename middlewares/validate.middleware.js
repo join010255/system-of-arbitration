@@ -1,3 +1,5 @@
+import * as z from "zod";
+
 // validation the post request  and put body data
 export const validationdAffectation = async(req, res, next) => {
     const {arbitreId, matchId, role} = req.body;
@@ -10,7 +12,6 @@ export const validationdAffectation = async(req, res, next) => {
 // validation the  post request and put body data from match
 export const validationMatch = async(req, res, next) => {
     const {equipeDomicile, equipeExterieur, stade, villeHote, dateMatch, phase} = req.body;
-   
     if(!equipeDomicile || !equipeExterieur || !stade || !villeHote || !dateMatch || !phase) return res.status(400).json({message: "error in request"});
     const matchPhase = ["Groupes", "8e", "4e", "demi", "finale"]
     if(!matchPhase.includes(phase)) return res.status(400).json({message: "error in request"});
@@ -35,8 +36,15 @@ export const validationarbite = async(req, res, next) => {
 }
 
 export const validationLogin = async(req, res, next) => {
-    const {username, password} = req.body;
-    if(!username || !password)  return res.status(400).json({message: "error in request"});
+    const  validateData = z.object({
+        email : z.string().email(),
+        password : z.string().min(8, "the password size is 8 len")
+    })
+    const {email, username, password} = req.body;
+//return res.status(400).json({message: "error in request"});
+    if(email || username && password){
+
+    }
     next()
 }
 

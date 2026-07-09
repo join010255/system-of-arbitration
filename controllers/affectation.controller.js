@@ -1,9 +1,16 @@
 import Affectation from "../models/affectation.model.js"
+import Match from "../models/match.model.js"
+import Arbitre from "../models/arbitre.model.js"
 
 class AffectationManages{
     getAll = async (req, res) => {
         try{
-            const arbitre = await Affectation.findAll();
+            const arbitre = await Affectation.findAll({
+                include : [
+                    Match,
+                    Arbitre
+                ]
+            });
             if(arbitre.length === 0) return res.status(404).json({message: "data note fond"})
             res.status(201).json(arbitre)
         }catch(erro){
