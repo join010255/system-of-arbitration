@@ -42,7 +42,7 @@ const validateData = z.object({
     password : z.string().min(8)
 }).refine((data) => data.email || data.username, {
     message : "email or username not found",
-    path: ["email"]    
+    path: ["email"]
 });
 
 export const validationLogin = async(req, res, next) => {

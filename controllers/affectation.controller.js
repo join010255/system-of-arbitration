@@ -7,8 +7,10 @@ class AffectationManages{
         try{
             const arbitre = await Affectation.findAll({
                 include : [
-                    Match,
-                    Arbitre
+                    {
+                        model: Match,
+                        attributes : []
+                    }
                 ]
             });
             if(arbitre.length === 0) return res.status(404).json({message: "data note fond"})
