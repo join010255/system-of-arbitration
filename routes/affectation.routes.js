@@ -9,8 +9,8 @@ const routerAff = express.Router()
 const affectation = new AffectationManages()
 
 // thes is all methods 
-routerAff.get("/", affectation.getAll)
-routerAff.get("/:id", affectation.getByID)
+routerAff.get("/", authorize, affectation.getAll)
+routerAff.get("/:id", authorize, affectation.getByID)
 routerAff.put("/:id", validationdAffectation, authenticate, authorize("admin", "commissaire"), affectation.updateData)
 routerAff.post("/", validationdAffectation, authenticate, authorize("admin", "commissaire"), affectation.setData)
 routerAff.delete("/:id", authenticate, authorize("admin"), affectation.delete)

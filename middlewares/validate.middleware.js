@@ -55,12 +55,8 @@ export const validationarbite = async(req, res, next) => {
 
 // zod object validtion to login 
 const validateData = z.object({
-    email : z.string().email().optional(),
-    username : z.string().min(3).optional(),
+    login : z.string().min(3),
     password : z.string().min(8)
-}).refine((data) => data.email || data.username, {
-    message : "email or username not found",
-    path: ["email"]
 });
 
 export const validationLogin = async(req, res, next) => {
@@ -76,7 +72,7 @@ export const validationLogin = async(req, res, next) => {
 const validationRegesterZod = z.object({
     username : z.string().min(4, "error in username size"),
     email : z.string().min(1, "error in email size").email(),
-    password: z.min(8, "error the password size 8"),
+    password: z.string().min(8, "error the password size 8"),
     role: z.enum(["admin", "commissaire", "arbitre", "consultation"])
 });
 export const validationRegerster = async(req, res, next) => {

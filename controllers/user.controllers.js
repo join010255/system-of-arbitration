@@ -10,9 +10,10 @@ class UserControle{
         try{
             const user = await User.findOne({
                 where: {
-                    [Op.or] : [{username :  req.body.username}, {email : req.body.email}] 
+                    [Op.or] : [{username :  req.body.login}, {email : req.body.login}] 
                 }
             })
+            console.log("memmi")
             if(!user) return res.status(404).json({message : "user note found"})
             // console.log(user)
             const verfypasswords = bcrypt.compare(
@@ -21,16 +22,25 @@ class UserControle{
             )
             if(!verfypasswords) return res.status(401).json({message: "Invalid username or password"})
             
-            const token = jwt.sign(
+            const acessToken = jwt.sign(
                 {
                     id : user.id
                 },
                 process.env.JWT_SECRET,
                 {
-                    expiresIn : "12h"
+                    expiresIn : "15m"
+                }
+            );
+            const refreshToken = jws.sign(
+                {
+                    id : user.id
+                },
+                process.env.JWT_REFRESH_SECRET,
+                {
+                    expiresIn : "7d"
                 }
             )
-            res.status(200).json({token : token})
+            res.status(200).json({acessToken : acessToken, refreshToken : refreshToken})
         }catch(error){
             console.log(error)
             res.status(404).json({message : "data set sec"})
@@ -64,12 +74,35 @@ class UserControle{
             res.status(201).json({message : "regester ok"})
 
         }catch(error){
-            console.log(error) /*hna kin error hawa null
-TypeError: Cannot read properties of undefined (reading 'password')
-    at regester (file:///home/dalas/football-server/referee-api/controllers/user.controllers.js:53:56)
-    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)*/ 
+            console.log(error) 
             res.status(500).json({message : "regester error in the server"})
         }
+    
+    changePasswords = async(req, res) =>{
+        try{
+            const userResult = User.findOne({
+                where : {username : req.body.username}
+            });
+            if(!userResult) return res.status(404).json({message : "user not found"});
+            const comparePassowrd = bcrypt.compare(
+                req.body.password1,
+                userResult.password
+            );
+
+            if(!comparePassowrd){
+                return res.status(401).json({message : 'password is false'})
+            }else if(req.body.password2 !== req.body.password3) return res.status(401).json({message : "passwords error"})
+            
+            const newPasswordHash = await bcrypt.hash(req.body.password3, 10)
+            userResult.password = newPasswordHash;
+
+            await userResult.save();
+
+        }catch(error){
+            res.status(500).json({message : error.message});
+        }
+    }
+
     }
     
 }

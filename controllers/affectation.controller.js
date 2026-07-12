@@ -9,7 +9,12 @@ class AffectationManages{
                 include : [
                     {
                         model: Match,
-                        attributes : []
+                        attributes : ["equipeDomicile", "equipeExterieur", "stade", "villeHote", "dateMatch"]
+                    },
+                    {
+                        model: Arbitre,
+                        attributes : ["nom", "prenom", "nationalite", "categorie", "statut"]
+
                     }
                 ]
             });
@@ -17,6 +22,7 @@ class AffectationManages{
             res.status(201).json(arbitre)
         }catch(erro){
             console.log({error: erro.message})
+            res.status(500).json({erorr :  erro.message})
         }
     }
 
@@ -31,9 +37,9 @@ class AffectationManages{
 
     setData = async(req, res) => {
         try{
-            const {arbitreId, matchId, role} = req.body
-            const  checkarbitId  = await Arbitre.findOne(arbitreId);
-            const  checkMatchId  = await Arbitre.findOne(matchId);
+            const {arbitreId, matchId, role} = req.body;
+            const  checkarbitId  = await Arbitre.findByPk(arbitreId);
+            const  checkMatchId  = await Match.findByPk(matchId);
             if(!checkarbitId) return res.status(404).json({message : "arbitid not fount"})
             if(!checkMatchId) return res.status(404).json({message : "matchId not found"})
             await Affectation.create({

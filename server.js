@@ -16,7 +16,9 @@ async function main(){
     try{    
         await sequelize.authenticate();
         console.log("database has conetiond")
-        await sequelize.sync()
+        // await sequelize.sync({ force: true });
+        await sequelize.sync();
+
     }catch(error){
         console.log(error)
     } 
