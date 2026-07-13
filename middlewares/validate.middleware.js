@@ -25,7 +25,7 @@ const validateMathZod = z.object({
     stade: z.string().min(1, "error 3"),
     villeHote: z.string().min(1, "error 4"),
     dateMatch: z.string().datetime(),
-    phase: z.enum(["Groupes", "8e", "4e", "demi", "finale"])
+    phase: z.enum(["groupes", "8e", "4e", "demi", "finale"])
     
 })
 export const validationMatch = async(req, res, next) => {
@@ -77,6 +77,7 @@ const validationRegesterZod = z.object({
 });
 export const validationRegerster = async(req, res, next) => {
     const result = validationRegesterZod.safeParse(req.body);
-    if(!result.success) return res.status(400).json({message : "Role is not valid"});
+    console.log(req.body)
+    if(!result.success) return res.status(400).json({message : ""});
     next()
 };

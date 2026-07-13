@@ -13,13 +13,13 @@ class UserControle{
                     [Op.or] : [{username :  req.body.login}, {email : req.body.login}] 
                 }
             })
-            console.log("memmi")
             if(!user) return res.status(404).json({message : "user note found"})
-            // console.log(user)
+            console.log(user)
             const verfypasswords = bcrypt.compare(
                 req.body.password,
                 user.password
             )
+            console.log(verfypasswords)
             if(!verfypasswords) return res.status(401).json({message: "Invalid username or password"})
             
             const acessToken = jwt.sign(
@@ -31,11 +31,11 @@ class UserControle{
                     expiresIn : "15m"
                 }
             );
-            const refreshToken = jws.sign(
+            const refreshToken = jwt.sign(
                 {
                     id : user.id
                 },
-                process.env.JWT_REFRESH_SECRET,
+                process.env.REFRESH_TOKEN_SECRET,
                 {
                     expiresIn : "7d"
                 }
